@@ -560,6 +560,8 @@ class Audit(commands.Cog):
             action_type="member_joined",
             actor=member,
             fields=[
+                field("Member", member.mention, inline=True),
+                field("Username", f"`{member.name}`", inline=True),
                 field("Member ID", f"`{member.id}`", inline=True),
                 field("Account Created", discord.utils.format_dt(member.created_at, "R"), inline=True),
                 field("Member Count", f"`{member.guild.member_count}`", inline=True),
@@ -584,6 +586,8 @@ class Audit(commands.Cog):
             action_type="member_left",
             actor=actor,
             fields=[
+                field("Member", member.mention, inline=True),
+                field("Username", f"`{member.name}`", inline=True),
                 field("Member ID", f"`{member.id}`", inline=True),
                 field("Joined", joined, inline=True),
                 field("Member Count", f"`{member.guild.member_count}`", inline=True),

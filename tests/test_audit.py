@@ -720,6 +720,9 @@ class TestMemberJoinLeaveAuditing(AuditTestCase):
         await self.cog.on_member_join(member)
 
         self.assertEqual(len(self.member_channel.sent), 1)
+        fields = self._fields(self.member_channel)
+        self.assertEqual(fields["Member:"], member.mention)
+        self.assertEqual(fields["Username:"], "`newbie`")
         self.assertEqual(self.stored_cases, {})
 
     async def test_join_without_configured_channel_is_not_logged(self):
@@ -736,7 +739,10 @@ class TestMemberJoinLeaveAuditing(AuditTestCase):
         await self.cog.on_member_remove(member)
 
         self.assertEqual(len(self.member_channel.sent), 1)
-        self.assertNotIn("Actor:", self._fields(self.member_channel))
+        fields = self._fields(self.member_channel)
+        self.assertNotIn("Actor:", fields)
+        self.assertEqual(fields["Member:"], member.mention)
+        self.assertEqual(fields["Username:"], "`someone`")
         self.assertEqual(self.stored_cases, {})
 
     async def test_remove_with_kick_entry_logs_actor(self):
